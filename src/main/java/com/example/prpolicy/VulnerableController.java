@@ -97,7 +97,7 @@ public class VulnerableController {
     @GetMapping("/search")
     public String search(@RequestParam String query) {
         // Vulnerable: User input directly returned in HTML without sanitization
-        return "<html><body><h1>Search Results for: " + query + "</h1></body></html>";
+//        return "<html><body><h1>Search Results for: " + query + "</h1></body></html>";
     }
 
     // Additional SAST Issue: Insecure Random
