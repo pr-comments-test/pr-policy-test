@@ -33,6 +33,7 @@ public class DiffFunctionsCondionalParam extends HttpServlet {
 
 		String paramValue = request.getParameter("evilParam");
 		isAdmin = Boolean.parseBoolean(request.getParameter("isAdmin"));
+		Connection conn = DriverManager.getConnection("jdbc:mysql://local/", "userName", "password");
 
 		goToSQL(paramValue);
 
