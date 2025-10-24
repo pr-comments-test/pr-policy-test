@@ -59,3 +59,5 @@ This repository contains the following intentional vulnerabilities for testing p
 - **Jackson 2.9.8** - Known deserialization vulnerabilities
 
 **WARNING: This code is intentionally vulnerable and should NEVER be deployed to production.**
+
+PR-POLICY-TEST
