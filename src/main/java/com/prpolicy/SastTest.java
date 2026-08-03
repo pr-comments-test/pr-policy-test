@@ -11,10 +11,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class SastTest {
 
-    // Issue 1: Hardcoded credentials
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/mydb";
-    private static final String DB_USER = "admin";
-    private static final String DB_PASSWORD = "superSecret123";
+    private static final String DB_URL = System.getenv("DB_URL");
+    private static final String DB_USER = System.getenv("DB_USER");
+    private static final String DB_PASSWORD = System.getenv("DB_PASSWORD");
 
     // Issue 2: SQL injection - user input concatenated directly into query
     public static void getUser(String username) throws SQLException {
@@ -49,9 +48,13 @@ public class SastTest {
         return content.toString();
     }
 
-    // Issue 6: XXE (XML External Entity) injection - external entities enabled
     public static void parseXml(InputStream xmlInput) throws Exception {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+        factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
+        factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+        factory.setXIncludeAware(false);
+        factory.setExpandEntityReferences(false);
         DocumentBuilder builder = factory.newDocumentBuilder();
         builder.parse(xmlInput);
     }
