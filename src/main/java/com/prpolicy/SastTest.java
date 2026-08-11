@@ -1,12 +1,12 @@
 package com.prpolicy;
 
 import java.io.*;
-import java.security.SecureRandom;
+import java.security.MessageDigest;
 import java.sql.*;
 import java.util.Base64;
 import javax.xml.parsers.*;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 
 public class SastTest {
@@ -29,14 +29,11 @@ public class SastTest {
         Process process = runtime.exec("ls " + userInput);
     }
 
+    // Issue 4: Weak cryptography - MD5 used for hashing passwords
     public static String hashPassword(String password) throws Exception {
-        SecureRandom random = new SecureRandom();
-        byte[] salt = new byte[16];
-        random.nextBytes(salt);
-        PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 310_000, 256);
-        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        byte[] hash = skf.generateSecret(spec).getEncoded();
-        return Base64.getEncoder().encodeToString(salt) + ":" + Base64.getEncoder().encodeToString(hash);
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        byte[] hash = md.digest(password.getBytes());
+        return Base64.getEncoder().encodeToString(hash);
     }
 
     // Issue 5: Path traversal - no validation on user-controlled file path
